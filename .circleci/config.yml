@@ -27,11 +27,11 @@ jobs:
       - setup_remote_docker:
           docker_layer_caching: true # Enable Docker layer caching for faster builds
       - run:
-          name: Build Docker image
+          name: Build and push Docker image
           command: |
             echo "Building Docker image"
             echo "Starting the build process"
-            echo "docker build -t rpg-shop-api ."
+            docker build -t rpg-gaming-shop:latest .
             echo "Just mocking up be cause we need to have the real container/artfact registry to push the image on it"
             echo "docker push blabla"
             echo "End of the build and push process"
