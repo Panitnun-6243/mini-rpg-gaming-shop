@@ -1,0 +1,48 @@
+version: 2.1
+orbs:
+  go: circleci/go@1.11.0
+
+jobs:
+  build_and_test:
+    executor:
+      name: go/default # Use the default executor from the orb
+      tag: "1.22.2"
+    steps:
+      - checkout # checkout source code to working directory
+      - go/load-cache # Load cached Go modules.
+      - go/mod-download # Run 'go mod download'.
+      - go/save-cache # Save Go modules to cache.
+      - run:
+          name: Run tests
+          command: |
+            echo "Running tests"
+            echo "go test -v"
+            echo "Just print the mockup running build and test because we need to write the real unit tests"
+
+  build_and_push_image:
+    docker:
+      - image: cimg/go:1.22.2
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true # Enable Docker layer caching for faster builds
+      - run:
+          name: Build Docker image
+          command: |
+            echo "Building Docker image"
+            echo "Starting the build process"
+            echo "docker build -t rpg-shop-api ."
+            echo "Just mocking up be cause we need to have the real container/artfact registry to push the image on it"
+            echo "docker push blabla"
+            echo "End of the build and push process"
+
+workflows:
+  build_and_deploy_api:
+    jobs:
+      - build_and_test
+      - build_and_push_image:
+          requires:
+            - build_and_test
+          filters:
+            branches:
+              only: main # only deploy when on main
