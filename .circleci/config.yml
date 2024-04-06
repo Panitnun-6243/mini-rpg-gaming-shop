@@ -30,10 +30,10 @@ jobs:
           name: Build and push Docker image
           command: |
             echo "Building Docker image"
-            echo "Starting the build process"
-            docker build -t rpg-gaming-shop:latest .
-            echo "Just mocking up be cause we need to have the real container/artfact registry to push the image on it"
-            echo "docker push blabla"
+            echo "Starting the build process" | docker build -t rpg-gaming-shop:latest .
+            docker tag rpg-gaming-shop:latest rpggamingshop.azurecr.io/rpg-gaming-shop:latest
+            echo $AZURE_ACR_PASSWORD | docker login rpggamingshop.azurecr.io -u $AZURE_ACR_USERNAME --password-stdin
+            docker push rpggamingshop.azurecr.io/rpg-gaming-shop:latest
             echo "End of the build and push process"
 
 workflows:
